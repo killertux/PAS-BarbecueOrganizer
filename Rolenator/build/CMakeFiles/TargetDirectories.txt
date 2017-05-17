@@ -1,0 +1,7 @@
+/home/clemente/projects/Rolenator/build/CMakeFiles/install/strip.dir
+/home/clemente/projects/Rolenator/build/CMakeFiles/install/local.dir
+/home/clemente/projects/Rolenator/build/CMakeFiles/rolenator.dir
+/home/clemente/projects/Rolenator/build/CMakeFiles/edit_cache.dir
+/home/clemente/projects/Rolenator/build/CMakeFiles/rebuild_cache.dir
+/home/clemente/projects/Rolenator/build/CMakeFiles/install.dir
+/home/clemente/projects/Rolenator/build/CMakeFiles/list_install_components.dir

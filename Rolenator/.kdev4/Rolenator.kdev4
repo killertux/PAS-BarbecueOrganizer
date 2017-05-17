@@ -1,0 +1,35 @@
+[Buildset]
+BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\x12\x00R\x00o\x00l\x00e\x00n\x00a\x00t\x00o\x00r)
+
+[CMake]
+Build Directory Count=1
+Current Build Directory Index=0
+
+[CMake][CMake Build Directory 0]
+Build Directory Path=/home/clemente/projects/Rolenator/build
+Build Type=Debug
+CMake Binary=/usr/bin/cmake
+Environment Profile=
+Extra Arguments=
+Install Directory=
+
+[Launch]
+Launch Configurations=Launch Configuration 0
+
+[Launch][Launch Configuration 0]
+Configured Launch Modes=execute
+Configured Launchers=nativeAppLauncher
+Name=Novo lançador Binário compilado
+Type=Native Application
+
+[Launch][Launch Configuration 0][Data]
+Arguments=
+Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x00)
+Dependency Action=Nothing
+EnvironmentGroup=
+Executable=file:///home/clemente/projects/Rolenator/build/rolenator
+External Terminal=konsole --noclose --workdir %workdir -e %exe
+Project Target=Rolenator,rolenator
+Use External Terminal=false
+Working Directory=
+isExecutable=true
