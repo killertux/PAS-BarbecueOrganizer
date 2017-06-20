@@ -1,31 +1,31 @@
 #ifndef EVENT_HPP
 #define EVENT_HPP
 
-#include <string>
+#include <QString>
 
 class Event{
-	std::string name;
-	std::string local;
-	std::string date;
-	std::string description;
-	std::string price;
+	QString name;
+	QString local;
+	QString date;
+	QString description;
+	QString price;
 	bool food;
 	bool drink;
 	
 public:
-	void setName(std::string name){this->name=name;}
-	void setLocal(std::string local){this->local=local;}
-	void setDate(std::string date){this->date=date;}
-	void setDescription(std::string description){this->description=description;}
-	void setPrice(std::string price){this->price=price;}
+	void setName(QString name){this->name=name;}
+	void setLocal(QString local){this->local=local;}
+	void setDate(QString date){this->date=date;}
+	void setDescription(QString description){this->description=description;}
+	void setPrice(QString price){this->price=price;}
 	void setFood(bool food){this->food=food;}
 	void setDrink(bool drink){this->drink=drink;}
 	
-	std::string getName(){return this->name;}
-	std::string getLocal(){return this->local;}
-	std::string getDate(){return this->date;}
-	std::string getDescription(){return this->description;}
-	std::string getPrice(){return this->price;}
+	QString getName(){return this->name;}
+	QString getLocal(){return this->local;}
+	QString getDate(){return this->date;}
+	QString getDescription(){return this->description;}
+	QString getPrice(){return this->price;}
 	bool getFood(){return this->food;}
 	bool getDrink(){return this->drink;}
 };

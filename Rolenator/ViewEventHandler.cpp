@@ -22,11 +22,11 @@ ViewEventHandler::ViewEventHandler(QMainWindow *mother, Event *event, User *user
 		this->viewEventWindow.pushButtonConfirmar->hide();
 	}
 	
-	this->viewEventWindow.labelNomeEvento->setText(event->getName().c_str());
-	this->viewEventWindow.labelDataHora->setText(event->getDate().c_str());
-	this->viewEventWindow.labelLocal->setText(event->getLocal().c_str());
-	this->viewEventWindow.textBrowserDescricao->setPlainText(event->getDescription().c_str());
-	this->viewEventWindow.labelPreco->setText(event->getPrice().c_str());
+	this->viewEventWindow.labelNomeEvento->setText(event->getName());
+	this->viewEventWindow.labelDataHora->setText(event->getDate());
+	this->viewEventWindow.labelLocal->setText(event->getLocal());
+	this->viewEventWindow.textBrowserDescricao->setPlainText(event->getDescription());
+	this->viewEventWindow.labelPreco->setText(event->getPrice());
 	if(event->getFood())
 		this->viewEventWindow.checkBoxComidaSim->setCheckState(Qt::Checked);
 	else

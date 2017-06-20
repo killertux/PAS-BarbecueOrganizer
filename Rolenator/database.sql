@@ -7,7 +7,7 @@ CREATE TABLE user (
 );
 CREATE TABLE event (
 	name VARCHAR(100),
-	date DATE,
+	date DATETIME,
 	description TEXT,
 	price FLOAT,
 	local VARCHAR(100),

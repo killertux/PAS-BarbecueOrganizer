@@ -33,3 +33,6 @@ Project Target=Rolenator,rolenator
 Use External Terminal=false
 Working Directory=
 isExecutable=true
+
+[Project]
+VersionControlSupport=kdevgit

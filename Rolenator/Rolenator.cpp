@@ -13,6 +13,7 @@ Rolenator::Rolenator()
 		std::cout << "Error opening the database connection!\n";
 	this->loginHandler = new LoginHandler(this);
 	DAORegistry::setUserDAO(new UserDAO(&this->db));
+	DAORegistry::setEventDAO(new EventDAO(&this->db));
 	/*
 	
 	this->viewEventHandler = new ViewEventHandler(this,event);*/

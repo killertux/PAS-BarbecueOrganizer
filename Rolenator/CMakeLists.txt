@@ -4,7 +4,7 @@ find_package(Qt4 REQUIRED)
 
 include_directories(${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})
 
-set(Rolenator_SRCS Rolenator.cpp LoginHandler.cpp RegisterHandler.cpp EventEditHandler.cpp InviteHandler.cpp ViewEventHandler.cpp MessageHandler.cpp MainPageHandler.cpp DAO.cpp User.cpp UserDAO.cpp DAORegistry.cpp main.cpp)
+set(Rolenator_SRCS Rolenator.cpp LoginHandler.cpp RegisterHandler.cpp EventEditHandler.cpp InviteHandler.cpp ViewEventHandler.cpp MessageHandler.cpp MainPageHandler.cpp DAO.cpp User.cpp UserDAO.cpp EventDAO.cpp DAORegistry.cpp main.cpp)
 
 qt4_automoc(${Rolenator_SRCS} LoginHandler.hpp RegisterHandler.hpp EventEditHandler.hpp InviteHandler.hpp ViewEventHandler.hpp MessageHandler.hpp MainPageHandler.hpp)
 add_executable(rolenator ${Rolenator_SRCS})

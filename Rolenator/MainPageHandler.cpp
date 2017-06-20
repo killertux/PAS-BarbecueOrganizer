@@ -26,7 +26,7 @@ MainPageHandler::MainPageHandler(QMainWindow* mother, User *user){
 	events[0]->setFood(false);
 	events[0]->setDate("01/06/17 20:00");
 	
-	this->mainPageWindow.comboBoxEventos->addItem(events[0]->getName().c_str());
+	this->mainPageWindow.comboBoxEventos->addItem(events[0]->getName());
 	
 	this->nUsers = userDAO->getAllUsers(&this->users);
 	for(int i=0; i< this->nUsers; i++)

@@ -11,6 +11,8 @@ private:
 public:
 	static UserDAO *getUserDAO(){return DAORegistry::userDAO;}
 	static void setUserDAO(UserDAO *userDAO){DAORegistry::userDAO = userDAO;}
+	static EventDAO *getEventDAO(){return DAORegistry::eventDAO;}
+	static void setEventDAO(EventDAO *eventDAO){DAORegistry::eventDAO = eventDAO;}
 	
 };
 #endif

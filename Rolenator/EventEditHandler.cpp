@@ -20,10 +20,10 @@ EventEditHandler::EventEditHandler(QMainWindow *mother, Event *event, User *user
 	
 	if(event!=NULL){
 		this->fromEvent =true;
-		this->eventEditWindow.lineEditNomeEvento->setText(event->getName().c_str());
-		this->eventEditWindow.lineEditLocal->setText(event->getLocal().c_str());
-		this->eventEditWindow.textEditDescricao->setPlainText(event->getDescription().c_str());
-		this->eventEditWindow.doubleSpinBoxPreco->setValue(this->eventEditWindow.doubleSpinBoxPreco->valueFromText(event->getPrice().c_str()));
+		this->eventEditWindow.lineEditNomeEvento->setText(event->getName());
+		this->eventEditWindow.lineEditLocal->setText(event->getLocal());
+		this->eventEditWindow.textEditDescricao->setPlainText(event->getDescription());
+		this->eventEditWindow.doubleSpinBoxPreco->setValue(this->eventEditWindow.doubleSpinBoxPreco->valueFromText(event->getPrice()));
 		if(event->getFood())
 			this->eventEditWindow.checkBoxComidaSim->setCheckState(Qt::Checked);
 		else
