@@ -21,7 +21,7 @@ MainPageHandler::MainPageHandler(QMainWindow* mother, User *user){
 	events[0]->setName("Evento de Teste");
 	events[0]->setLocal("UTFPR");
 	events[0]->setDescription("Apenas uma descrição de teste");
-	events[0]->setPrice("32,00");
+	events[0]->setPrice(32.50);
 	events[0]->setDrink(true);
 	events[0]->setFood(false);
 	events[0]->setDate("01/06/17 20:00");

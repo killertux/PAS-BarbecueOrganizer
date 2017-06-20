@@ -3,7 +3,9 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QVariant>
 #include "Event.hpp"
+#include "DAORegistry.hpp"
 #include "EventEditWindow.hpp"
 #include "ViewEventHandler.hpp"
 #include "MainPageHandler.hpp"

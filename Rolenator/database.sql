@@ -7,6 +7,7 @@ CREATE TABLE user (
 );
 CREATE TABLE event (
 	name VARCHAR(100),
+	owner VARCHAR(50),
 	date DATETIME,
 	description TEXT,
 	price FLOAT,
@@ -14,5 +15,6 @@ CREATE TABLE event (
 	food BOOLEAN,
 	drink BOOLEAN,
 	eid BIGINT AUTO_INCREMENT,
-	PRIMARY KEY(eid)
+	PRIMARY KEY(eid),
+	foreign key(owner) REFERENCES user(login)
 );

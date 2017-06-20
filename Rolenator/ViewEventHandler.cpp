@@ -26,7 +26,8 @@ ViewEventHandler::ViewEventHandler(QMainWindow *mother, Event *event, User *user
 	this->viewEventWindow.labelDataHora->setText(event->getDate());
 	this->viewEventWindow.labelLocal->setText(event->getLocal());
 	this->viewEventWindow.textBrowserDescricao->setPlainText(event->getDescription());
-	this->viewEventWindow.labelPreco->setText(event->getPrice());
+	this->viewEventWindow.labelPreco->setText(QString::number(event->getPrice()));
+	std::cout << event->getPrice() << std::endl;
 	if(event->getFood())
 		this->viewEventWindow.checkBoxComidaSim->setCheckState(Qt::Checked);
 	else

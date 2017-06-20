@@ -23,7 +23,7 @@ EventEditHandler::EventEditHandler(QMainWindow *mother, Event *event, User *user
 		this->eventEditWindow.lineEditNomeEvento->setText(event->getName());
 		this->eventEditWindow.lineEditLocal->setText(event->getLocal());
 		this->eventEditWindow.textEditDescricao->setPlainText(event->getDescription());
-		this->eventEditWindow.doubleSpinBoxPreco->setValue(this->eventEditWindow.doubleSpinBoxPreco->valueFromText(event->getPrice()));
+		this->eventEditWindow.doubleSpinBoxPreco->setValue(event->getPrice());
 		if(event->getFood())
 			this->eventEditWindow.checkBoxComidaSim->setCheckState(Qt::Checked);
 		else
@@ -64,6 +64,7 @@ void EventEditHandler::checkBoxesYes(int state){
 }
 
 void EventEditHandler::save(){
+	EventDAO *eventDAO = DAORegistry::getEventDAO();
 	//Let's check if all necessary field were filled.
 	if(this->eventEditWindow.lineEditNomeEvento->text().isEmpty()){
 		this->_showError("É necessário preencher o campo do nome!");
@@ -78,6 +79,19 @@ void EventEditHandler::save(){
 		return;
 	}
 	//Save Event.
+	if(this->event == NULL){
+		this->event = new Event();
+		this->event->setName(this->eventEditWindow.lineEditNomeEvento->text());
+		this->event->setDescription(this->eventEditWindow.textEditDescricao->toPlainText());
+		this->event->setLocal(this->eventEditWindow.lineEditLocal->text());
+		this->event->setDate(this->eventEditWindow.dateTimeEdit->dateTime().toString("yyyy-MM-dd HH:mm:ss"));
+		this->event->setPrice(this->eventEditWindow.doubleSpinBoxPreco->value());
+		this->event->setDrink((this->eventEditWindow.checkBoxBebidaSim->isChecked())?true:false);
+		this->event->setFood((this->eventEditWindow.checkBoxComidaSim->isChecked())?true:false);
+		this->event->setOwner(user);
+		std::cout << ((event->getDrink())?"true":"false") << std::endl;
+		eventDAO->insertEvent(this->event);
+	}
 	//Go to the view event
 	if(this->fromEvent){
 		ViewEventHandler *viewEvent = new ViewEventHandler(mother, event,user);
