@@ -4,6 +4,10 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include "RegisterWindow.hpp"
+#include "MainPageHandler.hpp"
+#include "User.hpp"
+#include "UserDAO.hpp"
+#include "DAORegistry.hpp"
 
 class RegisterHandler : public QObject{
 private:

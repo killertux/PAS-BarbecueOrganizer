@@ -1,7 +1,9 @@
 #include 	"MessageHandler.hpp"
 
-MessageHandler::MessageHandler(QMainWindow* mother){
+MessageHandler::MessageHandler(QMainWindow *mother,User *userFrom, User *userTo){
 	this->mother = mother;
+	this->userFrom = userFrom;
+	this->userTo = userTo;
 	this->messageWindow.setupUi(mother);
 	this->messageWindow.retranslateUi(mother);
 	
@@ -18,7 +20,7 @@ MessageHandler::~MessageHandler()
 
 void MessageHandler::back()
 {
-	MainPageHandler *main = new MainPageHandler(mother);
+	MainPageHandler *main = new MainPageHandler(mother, userFrom);
 }
 
 void MessageHandler::closeWindow(){

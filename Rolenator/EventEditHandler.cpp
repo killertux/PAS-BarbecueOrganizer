@@ -1,7 +1,8 @@
 #include "EventEditHandler.hpp"
 
-EventEditHandler::EventEditHandler(QMainWindow* mother, Event *event){
+EventEditHandler::EventEditHandler(QMainWindow *mother, Event *event, User *user){
 	this->mother = mother;
+	this->user = user;
 	this->eventEditWindow.setupUi(mother);
 	this->eventEditWindow.retranslateUi(mother);
 	this->fromEvent=false;
@@ -79,16 +80,16 @@ void EventEditHandler::save(){
 	//Save Event.
 	//Go to the view event
 	if(this->fromEvent){
-		ViewEventHandler *viewEvent = new ViewEventHandler(mother, event);
+		ViewEventHandler *viewEvent = new ViewEventHandler(mother, event,user);
 	} else
-		MainPageHandler *main = new MainPageHandler(mother);
+		MainPageHandler *main = new MainPageHandler(mother,user);
 }
 
 void EventEditHandler::back(){
 	if(this->fromEvent){
-		ViewEventHandler *viewEvent = new ViewEventHandler(mother, event);
+		ViewEventHandler *viewEvent = new ViewEventHandler(mother, event,user);
 	} else
-		MainPageHandler *main = new MainPageHandler(mother);
+		MainPageHandler *main = new MainPageHandler(mother,user);
 }
 
 

@@ -20,6 +20,7 @@ void LoginHandler::closeWindow()
 }
 
 void LoginHandler::login(){
+	UserDAO *userDAO = DAORegistry::getUserDAO();
 	//Let's check if the user have typed anything!
 	if(this->loginWindow.lineEditLogin->text() == ""){
 		this->_showError("Você precisa digitar um login válido!");
@@ -30,9 +31,10 @@ void LoginHandler::login(){
 		return;
 	}
 	
+	User *user = userDAO->getUser(this->loginWindow.lineEditLogin->text());
 	//See if user exists
-	if(this->loginWindow.lineEditLogin->text() == "teste" && this->loginWindow.lineEditPassword->text() == "teste1"){
-		MainPageHandler *main = new MainPageHandler(mother);
+	if(user != NULL && this->loginWindow.lineEditPassword->text() == user->getPassword()){
+		MainPageHandler *main = new MainPageHandler(mother,user);
 	} else {
 		this->_showError("Dados de usuário inválidos!");
 		return;

@@ -25,6 +25,7 @@ void RegisterHandler::_showError(QString text){
 }
 
 void RegisterHandler::registerUser(){
+	UserDAO *userDAO = DAORegistry::getUserDAO();
 	//All field are necessary
 	if(this->registerWindow.lineEditEmail->text() == ""){
 		this->_showError("É necessário preencher o campo do email!");
@@ -53,13 +54,23 @@ void RegisterHandler::registerUser(){
 		return;
 	}
 	
+	//Checks if email is avalible
+	if(!userDAO->checkAvalibleEmail(registerWindow.lineEditEmail->text())){
+		this->_showError("Email já cadastrado!");
+		return;
+	}
+	
 	//Sees if user already register.
-	if(true){
+	
+	if(userDAO->getUser(this->registerWindow.lineEditLogin->text()) != NULL){
 		this->_showError("Usuário já cadastrado no sistema!");
 		return;
 	} else {
 		//Create the user
+		User *user = new User(this->registerWindow.lineEditName->text(),this->registerWindow.lineEditLogin->text(),this->registerWindow.lineEditEmail->text(),this->registerWindow.lineEditPassword->text());
+		userDAO->insertUser(user);
 		//Go to the mainPage;
+		MainPageHandler *main = new MainPageHandler(mother,user);
 	}
 }
 

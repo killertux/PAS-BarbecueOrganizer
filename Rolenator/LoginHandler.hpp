@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
+#include "UserDAO.hpp"
+#include "User.hpp"
+#include "DAORegistry.hpp"
 #include "LoginWindow.hpp"
 #include "MainPageHandler.hpp"
 

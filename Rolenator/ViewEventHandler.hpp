@@ -7,6 +7,7 @@
 #include "EventEditHandler.hpp"
 #include "Event.hpp"
 #include "MainPageHandler.hpp"
+#include "User.hpp"
 
 class ViewEventHandler : public QObject{
 private:
@@ -14,9 +15,10 @@ private:
 	Ui_ViewEventWindow viewEventWindow;
 	QMainWindow *mother;
 	Event *event;
+	User *user;
 	
 public:
-	ViewEventHandler(QMainWindow *mother, Event *event);
+	ViewEventHandler(QMainWindow *mother, Event *event, User *user);
 	virtual ~ViewEventHandler();
 
 public slots:

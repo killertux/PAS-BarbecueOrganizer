@@ -3,13 +3,16 @@
 
 #include <QMainWindow>
 #include <QTextCodec>
+#include <iostream>
 #include "LoginHandler.hpp"
 #include "RegisterHandler.hpp"
 #include "EventEditHandler.hpp"
 #include "InviteHandler.hpp"
 #include "ViewEventHandler.hpp"
 #include "MessageHandler.hpp"
-
+#include <QSqlDatabase>
+#include "DAORegistry.hpp"
+#include "UserDAO.hpp"
 #include "Event.hpp"
 
 class Rolenator : public QMainWindow{
@@ -20,6 +23,7 @@ class Rolenator : public QMainWindow{
 	InviteHandler *inviteHandler;
 	ViewEventHandler *viewEventHandler;
 	MessageHandler *messageHandler;
+	QSqlDatabase db;
 
 public:
     Rolenator();

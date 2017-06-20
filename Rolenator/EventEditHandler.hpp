@@ -7,6 +7,7 @@
 #include "EventEditWindow.hpp"
 #include "ViewEventHandler.hpp"
 #include "MainPageHandler.hpp"
+#include "User.hpp"
 
 class EventEditHandler : public QObject{
 private:
@@ -14,11 +15,12 @@ private:
 	Ui_EventEditWindow eventEditWindow;
 	QMainWindow *mother;
 	Event *event;
+	User *user;
 	
 	bool fromEvent;
 	void _showError(QString text);
 public:
-	EventEditHandler(QMainWindow *mother, Event *event);
+	EventEditHandler(QMainWindow *mother, Event *event, User *user);
 	virtual ~EventEditHandler();
 
 public slots:

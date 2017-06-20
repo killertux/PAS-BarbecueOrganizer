@@ -3,12 +3,16 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QVariant>
+#include <iostream>
 #include "MainPageWindow.hpp"
 #include "InviteHandler.hpp"
 #include "Event.hpp"
 #include "ViewEventHandler.hpp"
 #include "EventEditHandler.hpp"
 #include "MessageHandler.hpp"
+#include "User.hpp"
+#include "DAORegistry.hpp"
 
 class MainPageHandler : public QObject{
 private:
@@ -16,9 +20,12 @@ private:
 	Ui_MainPageWindow mainPageWindow;
 	QMainWindow *mother;
 	Event **events;
+	User *user;
+	User **users;
+	int nUsers;
 	
 public:
-	MainPageHandler(QMainWindow *mother);
+	MainPageHandler(QMainWindow *mother, User *user);
 	virtual ~MainPageHandler();
 
 public slots:

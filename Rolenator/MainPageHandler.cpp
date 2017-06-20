@@ -1,9 +1,11 @@
 #include "MainPageHandler.hpp"
 
-MainPageHandler::MainPageHandler(QMainWindow* mother){
+MainPageHandler::MainPageHandler(QMainWindow* mother, User *user){
 	this->mother = mother;
+	this->user = user;
 	this->mainPageWindow.setupUi(mother);
 	this->mainPageWindow.retranslateUi(mother);
+	UserDAO *userDAO = DAORegistry::getUserDAO();
 	
 	mother->connect(this->mainPageWindow.actionSair,SIGNAL(triggered()),this, SLOT(closeWindow()));
 	mother->connect(this->mainPageWindow.actionLog_out,SIGNAL(triggered()),mother, SLOT(goToLogin()));
@@ -26,13 +28,14 @@ MainPageHandler::MainPageHandler(QMainWindow* mother){
 	
 	this->mainPageWindow.comboBoxEventos->addItem(events[0]->getName().c_str());
 	
-	QListWidgetItem *user = new QListWidgetItem(this->mainPageWindow.listWidgetAmigos);
-	user->setText("Bruno");
-	this->mainPageWindow.listWidgetAmigos->setCurrentItem(user);
-	user = new QListWidgetItem(this->mainPageWindow.listWidgetAmigos);
-	user->setText("Everton");
-	user = new QListWidgetItem(this->mainPageWindow.listWidgetAmigos);
-	user->setText("Tavano");
+	this->nUsers = userDAO->getAllUsers(&this->users);
+	for(int i=0; i< this->nUsers; i++)
+		if(this->users[i]->getLogin()!=this->user->getLogin()){
+			QListWidgetItem *userItem = new QListWidgetItem(this->mainPageWindow.listWidgetAmigos);
+			std::cout << i << "-" << this->nUsers << std::endl;
+			userItem->setText(this->users[i]->getName());
+			userItem->setData(Qt::UserRole,users[i]->getLogin());
+		}
 }
 
 MainPageHandler::~MainPageHandler(){
@@ -49,16 +52,16 @@ void MainPageHandler::goToInvite(){
 }
 
 void MainPageHandler::goToViewEvent(){
-	ViewEventHandler *view = new ViewEventHandler(mother,events[0]);
+	ViewEventHandler *view = new ViewEventHandler(mother,events[0], user);
 }
 
 void MainPageHandler::goToEditEvent(){
-	EventEditHandler *event = new EventEditHandler(mother,NULL);
+	EventEditHandler *event = new EventEditHandler(mother,NULL, user);
 }
 
 void MainPageHandler::goToMessage(){
 	//get the current addItem
-	MessageHandler *msg = new MessageHandler(mother);
+	MessageHandler *msg = new MessageHandler(mother, user, user /*TODO*/);
 }
 
 
