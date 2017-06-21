@@ -61,9 +61,10 @@ void RegisterHandler::registerUser(){
 	}
 	
 	//Sees if user already register.
-	
-	if(userDAO->getUser(this->registerWindow.lineEditLogin->text()) != NULL){
+	User *gUser= userDAO->getUser(this->registerWindow.lineEditLogin->text());
+	if(gUser != NULL){
 		this->_showError("Usuário já cadastrado no sistema!");
+		delete gUser;
 		return;
 	} else {
 		//Create the user

@@ -89,7 +89,6 @@ void EventEditHandler::save(){
 		this->event->setDrink((this->eventEditWindow.checkBoxBebidaSim->isChecked())?true:false);
 		this->event->setFood((this->eventEditWindow.checkBoxComidaSim->isChecked())?true:false);
 		this->event->setOwner(user);
-		std::cout << ((event->getDrink())?"true":"false") << std::endl;
 		eventDAO->insertEvent(this->event);
 	}
 	//Go to the view event
