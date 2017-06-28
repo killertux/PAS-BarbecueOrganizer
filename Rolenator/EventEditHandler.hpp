@@ -19,6 +19,7 @@ private:
 	Event *event;
 	User *user;
 	
+	void getPossibleInvite();
 	bool fromEvent;
 	void _showError(QString text);
 public:
@@ -29,6 +30,7 @@ public slots:
 	void closeWindow();
 	void checkBoxesYes(int state);
 	void checkBoxesNo(int state);
+	void invite();
 	void save();
 	void back();
 };

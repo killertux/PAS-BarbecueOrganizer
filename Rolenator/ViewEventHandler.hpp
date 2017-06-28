@@ -8,6 +8,7 @@
 #include "Event.hpp"
 #include "MainPageHandler.hpp"
 #include "User.hpp"
+#include "DAORegistry.hpp"
 
 class ViewEventHandler : public QObject{
 private:
@@ -16,6 +17,8 @@ private:
 	QMainWindow *mother;
 	Event *event;
 	User *user;
+	
+	void processInvited();
 	
 public:
 	ViewEventHandler(QMainWindow *mother, Event *event, User *user);

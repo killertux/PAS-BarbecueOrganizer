@@ -17,6 +17,9 @@ EventEditHandler::EventEditHandler(QMainWindow *mother, Event *event, User *user
 	
 	mother->connect(this->eventEditWindow.pushButtonSave,SIGNAL(clicked()),this,SLOT(save()));
 	mother->connect(this->eventEditWindow.pushButtonBack,SIGNAL(clicked()),this,SLOT(back()));
+	mother->connect(this->eventEditWindow.pushButtonInvte,SIGNAL(clicked()),this,SLOT(invite()));
+	
+	this->getPossibleInvite();
 	
 	if(event!=NULL){
 		this->fromEvent =true;
@@ -24,6 +27,7 @@ EventEditHandler::EventEditHandler(QMainWindow *mother, Event *event, User *user
 		this->eventEditWindow.lineEditLocal->setText(event->getLocal());
 		this->eventEditWindow.textEditDescricao->setPlainText(event->getDescription());
 		this->eventEditWindow.doubleSpinBoxPreco->setValue(event->getPrice());
+		this->eventEditWindow.dateTimeEdit->setDateTime(QDateTime::fromString(event->getDate(),"yyyy-MM-ddTHH:mm:ss"));
 		if(event->getFood())
 			this->eventEditWindow.checkBoxComidaSim->setCheckState(Qt::Checked);
 		else
@@ -36,9 +40,17 @@ EventEditHandler::EventEditHandler(QMainWindow *mother, Event *event, User *user
 }
 
 EventEditHandler::~EventEditHandler(){
+	InviteDAO *inviteDAO = DAORegistry::getInviteDAO();
+	EventDAO *eventDAO = DAORegistry::getEventDAO();
+	if(!this->fromEvent)
+		inviteDAO->deleteAllFromEventId(eventDAO->getLastId()+1);
 }
 
 void EventEditHandler::closeWindow(){
+	InviteDAO *inviteDAO = DAORegistry::getInviteDAO();
+	EventDAO *eventDAO = DAORegistry::getEventDAO();
+	if(!this->fromEvent)
+		inviteDAO->deleteAllFromEventId(eventDAO->getLastId()+1);
 	mother->close();
 }
 
@@ -84,12 +96,22 @@ void EventEditHandler::save(){
 		this->event->setName(this->eventEditWindow.lineEditNomeEvento->text());
 		this->event->setDescription(this->eventEditWindow.textEditDescricao->toPlainText());
 		this->event->setLocal(this->eventEditWindow.lineEditLocal->text());
-		this->event->setDate(this->eventEditWindow.dateTimeEdit->dateTime().toString("yyyy-MM-dd HH:mm:ss"));
+		this->event->setDate(this->eventEditWindow.dateTimeEdit->dateTime().toString("yyyy-MM-ddTHH:mm:ss"));
 		this->event->setPrice(this->eventEditWindow.doubleSpinBoxPreco->value());
 		this->event->setDrink((this->eventEditWindow.checkBoxBebidaSim->isChecked())?true:false);
 		this->event->setFood((this->eventEditWindow.checkBoxComidaSim->isChecked())?true:false);
 		this->event->setOwner(user);
 		eventDAO->insertEvent(this->event);
+	} else {
+		this->event->setName(this->eventEditWindow.lineEditNomeEvento->text());
+		this->event->setDescription(this->eventEditWindow.textEditDescricao->toPlainText());
+		this->event->setLocal(this->eventEditWindow.lineEditLocal->text());
+		this->event->setDate(this->eventEditWindow.dateTimeEdit->dateTime().toString("yyyy-MM-ddTHH:mm:ss"));
+		this->event->setPrice(this->eventEditWindow.doubleSpinBoxPreco->value());
+		this->event->setDrink((this->eventEditWindow.checkBoxBebidaSim->isChecked())?true:false);
+		this->event->setFood((this->eventEditWindow.checkBoxComidaSim->isChecked())?true:false);
+		this->event->setOwner(user);
+		eventDAO->updateEvent(this->event);
 	}
 	//Go to the view event
 	if(this->fromEvent){
@@ -99,10 +121,48 @@ void EventEditHandler::save(){
 }
 
 void EventEditHandler::back(){
+	InviteDAO *inviteDAO = DAORegistry::getInviteDAO();
+	EventDAO *eventDAO = DAORegistry::getEventDAO();
 	if(this->fromEvent){
 		ViewEventHandler *viewEvent = new ViewEventHandler(mother, event,user);
-	} else
+	} else{
+		inviteDAO->deleteAllFromEventId(eventDAO->getLastId()+1);
 		MainPageHandler *main = new MainPageHandler(mother,user);
+	}
+}
+
+void EventEditHandler::getPossibleInvite(){
+	UserDAO *userDAO = DAORegistry::getUserDAO();
+	EventDAO *eventDAO = DAORegistry::getEventDAO();
+	this->eventEditWindow.listWidgetInvite->clear();
+	User **users;
+	int nUsers = 0;
+	if(this->event == NULL)
+		nUsers = userDAO->getAllUsersNotInvited(&users,eventDAO->getLastId()+1);
+	else
+		nUsers = userDAO->getAllUsersNotInvited(&users,event->getId());
+	for(int i=0; i< nUsers; i++)
+		if(users[i]->getLogin()!=this->user->getLogin()){
+			QListWidgetItem *userItem = new QListWidgetItem(this->eventEditWindow.listWidgetInvite);
+			userItem->setText(users[i]->getName());
+			userItem->setData(Qt::UserRole,users[i]->getLogin());
+		}
+}
+
+void EventEditHandler::invite(){
+	QListWidgetItem *item = this->eventEditWindow.listWidgetInvite->currentItem();
+	InviteDAO *inviteDAO = DAORegistry::getInviteDAO();
+	EventDAO *eventDAO = DAORegistry::getEventDAO();
+	Invite invite;
+	invite.setFrom(this->user->getLogin());
+	invite.setAccepted(false);
+	if(this->event == NULL)
+		invite.setEventId(eventDAO->getLastId()+1);
+	else
+		invite.setEventId(event->getId());
+	invite.setTo(item->data(Qt::UserRole).toString());
+	inviteDAO->insertInvite(&invite);
+	this->getPossibleInvite();
 }
 
 

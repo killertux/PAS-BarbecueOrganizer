@@ -14,6 +14,8 @@ Rolenator::Rolenator()
 	this->loginHandler = new LoginHandler(this);
 	DAORegistry::setUserDAO(new UserDAO(&this->db));
 	DAORegistry::setEventDAO(new EventDAO(&this->db));
+	DAORegistry::setInviteDAO(new InviteDAO(&this->db));
+	DAORegistry::setMessageDAO(new MessageDAO(&this->db));
 	/*
 	
 	this->viewEventHandler = new ViewEventHandler(this,event);*/

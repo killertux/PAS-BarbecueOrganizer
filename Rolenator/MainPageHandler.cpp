@@ -1,11 +1,16 @@
 #include "MainPageHandler.hpp"
 
 MainPageHandler::MainPageHandler(QMainWindow* mother, User *user){
+	UserDAO *userDAO = DAORegistry::getUserDAO();
+	InviteDAO *inviteDAO = DAORegistry::getInviteDAO();
+	EventDAO *eventDAO = DAORegistry::getEventDAO();
+	Event **events=NULL;
+	int nEvents;
 	this->mother = mother;
 	this->user = user;
 	this->mainPageWindow.setupUi(mother);
 	this->mainPageWindow.retranslateUi(mother);
-	UserDAO *userDAO = DAORegistry::getUserDAO();
+
 	
 	mother->connect(this->mainPageWindow.actionSair,SIGNAL(triggered()),this, SLOT(closeWindow()));
 	mother->connect(this->mainPageWindow.actionLog_out,SIGNAL(triggered()),mother, SLOT(goToLogin()));
@@ -14,27 +19,16 @@ MainPageHandler::MainPageHandler(QMainWindow* mother, User *user){
 	mother->connect(this->mainPageWindow.pushButtonCriarEvento,SIGNAL(clicked()),this,SLOT(goToEditEvent()));
 	mother->connect(this->mainPageWindow.pushButtonMessage,SIGNAL(clicked()),this,SLOT(goToMessage()));
 	
-	this->mainPageWindow.labelConvitesNum->setText("2");
-	
-	events = new Event*[1];
-	events[0] = new Event;
-	events[0]->setName("Evento de Teste");
-	events[0]->setLocal("UTFPR");
-	events[0]->setDescription("Apenas uma descrição de teste");
-	events[0]->setPrice(32.50);
-	events[0]->setDrink(true);
-	events[0]->setFood(false);
-	events[0]->setDate("01/06/17 20:00");
-	
-	this->mainPageWindow.comboBoxEventos->addItem(events[0]->getName());
+	this->updateEvents();
+	this->updateInvite();
 	
 	this->nUsers = userDAO->getAllUsers(&this->users);
 	for(int i=0; i< this->nUsers; i++)
 		if(this->users[i]->getLogin()!=this->user->getLogin()){
 			QListWidgetItem *userItem = new QListWidgetItem(this->mainPageWindow.listWidgetAmigos);
-			std::cout << i << "-" << this->nUsers << std::endl;
 			userItem->setText(this->users[i]->getName());
 			userItem->setData(Qt::UserRole,users[i]->getLogin());
+			this->mainPageWindow.listWidgetAmigos->setCurrentItem(userItem);
 		}
 }
 
@@ -47,12 +41,18 @@ void MainPageHandler::closeWindow(){
 
 void MainPageHandler::goToInvite(){
 	QMainWindow *inviteWindow = new QMainWindow(mother);
-	InviteHandler *inv = new InviteHandler(inviteWindow);
+	InviteHandler *inv = new InviteHandler(inviteWindow,this->invites,this->nInvites);
+	this->connect(inv,SIGNAL(updateInvites()),this,SLOT(updateInvite()));
+	this->connect(inv,SIGNAL(updateInvites()),this,SLOT(updateEvents()));
 	inviteWindow->show();
 }
 
 void MainPageHandler::goToViewEvent(){
-	ViewEventHandler *view = new ViewEventHandler(mother,events[0], user);
+	EventDAO *eventDAO = DAORegistry::getEventDAO();
+	int index = this->mainPageWindow.comboBoxEventos->currentIndex();
+	Event *event = eventDAO->getEvent(this->mainPageWindow.comboBoxEventos->itemData(index,Qt::UserRole).toInt());
+	
+	ViewEventHandler *view = new ViewEventHandler(mother,event,this->user);
 }
 
 void MainPageHandler::goToEditEvent(){
@@ -60,8 +60,31 @@ void MainPageHandler::goToEditEvent(){
 }
 
 void MainPageHandler::goToMessage(){
-	//get the current addItem
-	MessageHandler *msg = new MessageHandler(mother, user, user /*TODO*/);
+	QListWidgetItem *item = this->mainPageWindow.listWidgetAmigos->currentItem();
+	UserDAO *userDAO = DAORegistry::getUserDAO();
+	User *user_to = userDAO->getUser(item->data(Qt::UserRole).toString());
+
+	MessageHandler *msg = new MessageHandler(mother, user, user_to);
+}
+
+void MainPageHandler::updateInvite(){
+	InviteDAO *inviteDAO = DAORegistry::getInviteDAO();
+	this->nInvites = inviteDAO->getAllOpenInviteTo(&this->invites,this->user->getLogin());
+	this->mainPageWindow.labelConvitesNum->setText(QString::number(this->nInvites));
+	if(nInvites == 0)
+		this->mainPageWindow.pushButtonVisConvites->setEnabled(false);
+}
+
+void MainPageHandler::updateEvents(){
+	EventDAO *eventDAO = DAORegistry::getEventDAO();
+	int nEvents;
+	nEvents = eventDAO->getAllMyEvents(events,user->getLogin());
+	for(int i=0;i<nEvents;i++)
+		this->mainPageWindow.comboBoxEventos->addItem(events[i]->getName(),events[i]->getId());
+	
+	nEvents = eventDAO->getAllInvitedEvents(events,user->getLogin());
+	for(int i=0;i<nEvents;i++)
+		this->mainPageWindow.comboBoxEventos->addItem(events[i]->getName(),events[i]->getId());
 }
 
 

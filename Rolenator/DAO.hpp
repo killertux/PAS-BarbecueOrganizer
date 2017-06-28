@@ -13,6 +13,7 @@ protected:
 public:
 	DAO(QSqlDatabase *connection);
 	~DAO();
+	
 };
 
 #endif

@@ -62,3 +62,60 @@ bool UserDAO::checkAvalibleEmail(QString email){
 		return false;
 }
 
+int UserDAO::getAllUsersNotInvited(User *** users, int eventId){
+	QString query = "SELECT u1.login, u1.name, u1.email, u1.password FROM user AS u1 WHERE NOT EXISTS (SELECT 1 FROM invite AS i WHERE i.user = u1.login AND i.eid = '"+QString::number(eventId)+"');";
+	QSqlQuery result = this->retrieve(query);
+	if(result.size() <= 0 )
+		return 0;
+	(*users) = new User* [result.size()];
+	int n=0;
+	while(result.next()){
+		User *user = new User();
+		user->setLogin(result.value(0).toString());
+		user->setName(result.value(1).toString());
+		user->setEmail(result.value(2).toString());
+		user->setPassword(result.value(3).toString());
+		(*users)[n] = user;
+		n++;
+ 	}
+	return result.size();
+}
+
+int UserDAO::getAllUsersAcceptdInvite(User **& users, int eventId){
+	QString query = "SELECT u1.login, u1.name, u1.email, u1.password FROM user AS u1 JOIN invite AS i ON i.user = u1.login WHERE i.accepted = '1' AND i.confirmed = '0' AND i.eid = '"+QString::number(eventId)+"';";
+	QSqlQuery result = this->retrieve(query);
+	if(result.size() <= 0 )
+		return 0;
+	users = new User* [result.size()];
+	int n=0;
+	while(result.next()){
+		User *user = new User();
+		user->setLogin(result.value(0).toString());
+		user->setName(result.value(1).toString());
+		user->setEmail(result.value(2).toString());
+		user->setPassword(result.value(3).toString());
+		users[n] = user;
+		n++;
+ 	}
+	return result.size();
+}
+
+int UserDAO::getAllUsersConfirmedInvite(User **& users, int eventId){
+	QString query = "SELECT u1.login, u1.name, u1.email, u1.password FROM user AS u1 JOIN invite AS i ON i.user = u1.login WHERE i.confirmed = '1' AND i.eid = '"+QString::number(eventId)+"';";
+	QSqlQuery result = this->retrieve(query);
+	if(result.size() <= 0 )
+		return 0;
+	users = new User* [result.size()];
+	int n=0;
+	while(result.next()){
+		User *user = new User();
+		user->setLogin(result.value(0).toString());
+		user->setName(result.value(1).toString());
+		user->setEmail(result.value(2).toString());
+		user->setPassword(result.value(3).toString());
+		users[n] = user;
+		n++;
+ 	}
+	return result.size();
+}
+

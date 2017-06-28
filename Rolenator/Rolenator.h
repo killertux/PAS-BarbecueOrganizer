@@ -12,7 +12,6 @@
 #include "MessageHandler.hpp"
 #include <QSqlDatabase>
 #include "DAORegistry.hpp"
-#include "UserDAO.hpp"
 #include "Event.hpp"
 
 class Rolenator : public QMainWindow{

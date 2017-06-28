@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QVariant>
-#include <iostream>
+
 #include "MainPageWindow.hpp"
 #include "InviteHandler.hpp"
 #include "Event.hpp"
@@ -22,6 +22,8 @@ private:
 	Event **events;
 	User *user;
 	User **users;
+	Invite **invites;
+	int nInvites;
 	int nUsers;
 	
 public:
@@ -34,6 +36,8 @@ public slots:
 	void goToViewEvent();
 	void goToEditEvent();
 	void goToMessage();
+	void updateInvite();
+	void updateEvents();
 };
 
 #endif

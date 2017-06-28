@@ -6,8 +6,8 @@
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef EVENTEDITWINDOW_H
-#define EVENTEDITWINDOW_H
+#ifndef GERENCIAR_EVENTOS_H
+#define GERENCIAR_EVENTOS_H
 
 #include <QtCore/QVariant>
 #include <QtGui/QAction>
@@ -21,6 +21,7 @@
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
+#include <QtGui/QListWidget>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
@@ -58,6 +59,10 @@ public:
     QLabel *labelDescricao;
     QTextEdit *textEditDescricao;
     QDateTimeEdit *dateTimeEdit;
+    QLabel *labelInvite;
+    QHBoxLayout *horizontalLayout_4;
+    QListWidget *listWidgetInvite;
+    QPushButton *pushButtonInvte;
     QHBoxLayout *horizontalLayout_3;
     QPushButton *pushButtonBack;
     QPushButton *pushButtonSave;
@@ -199,6 +204,26 @@ public:
 
         formLayout->setWidget(1, QFormLayout::FieldRole, dateTimeEdit);
 
+        labelInvite = new QLabel(centralwidget);
+        labelInvite->setObjectName(QString::fromUtf8("labelInvite"));
+
+        formLayout->setWidget(7, QFormLayout::LabelRole, labelInvite);
+
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+        listWidgetInvite = new QListWidget(centralwidget);
+        listWidgetInvite->setObjectName(QString::fromUtf8("listWidgetInvite"));
+
+        horizontalLayout_4->addWidget(listWidgetInvite);
+
+        pushButtonInvte = new QPushButton(centralwidget);
+        pushButtonInvte->setObjectName(QString::fromUtf8("pushButtonInvte"));
+
+        horizontalLayout_4->addWidget(pushButtonInvte);
+
+
+        formLayout->setLayout(7, QFormLayout::FieldRole, horizontalLayout_4);
+
 
         verticalLayout_2->addLayout(formLayout);
 
@@ -262,6 +287,8 @@ public:
         doubleSpinBoxPreco->setSuffix(QString());
         labelLocal->setText(QApplication::translate("EventEditWindow", "Local", 0, QApplication::UnicodeUTF8));
         labelDescricao->setText(QApplication::translate("EventEditWindow", "Descri\303\247\303\243o", 0, QApplication::UnicodeUTF8));
+        labelInvite->setText(QApplication::translate("EventEditWindow", "Usu\303\241rios", 0, QApplication::UnicodeUTF8));
+        pushButtonInvte->setText(QApplication::translate("EventEditWindow", "Convidar", 0, QApplication::UnicodeUTF8));
         pushButtonBack->setText(QApplication::translate("EventEditWindow", "Voltar", 0, QApplication::UnicodeUTF8));
         pushButtonSave->setText(QApplication::translate("EventEditWindow", "Gravar", 0, QApplication::UnicodeUTF8));
         menuRol_nator->setTitle(QApplication::translate("EventEditWindow", "Rol\303\252nator", 0, QApplication::UnicodeUTF8));
@@ -275,4 +302,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // EVENTEDITWINDOW_H
+#endif // GERENCIAR_EVENTOS_H

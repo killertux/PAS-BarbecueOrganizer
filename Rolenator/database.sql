@@ -18,3 +18,21 @@ CREATE TABLE event (
 	PRIMARY KEY(eid),
 	foreign key(owner) REFERENCES user(login)
 );
+CREATE TABLE invite (
+	user VARCHAR(50),
+	eid BIGINT,
+	accepted BOOLEAN,
+	confirmed BOOLEAN,
+	PRIMARY KEY(user, eid),
+	foreign key(user) REFERENCES user(login)
+);
+CREATE TABLE message(
+	mid BIGINT AUTO_INCREMENT,
+	message VARCHAR(255),
+	from_user VARCHAR(50),
+	to_user VARCHAR(50),
+	was_read BOOLEAN,
+	primary key(mid),
+	foreign key(from_user) REFERENCES user(login),
+	foreign key(to_user)	REFERENCES user(login)
+);

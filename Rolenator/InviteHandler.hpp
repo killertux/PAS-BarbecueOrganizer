@@ -4,21 +4,25 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include "InviteWindow.hpp"
+#include "Invite.hpp"
+#include "DAORegistry.hpp"
 
 class InviteHandler : public QObject{
 private:
 	Q_OBJECT
 	Ui_InviteWindow inviteWindow;
 	QMainWindow *mother;
-	QString events[2];
+	Invite **invites;
 	int pointer,n;
 public:
-	InviteHandler(QMainWindow *mother);
+	InviteHandler(QMainWindow *mother, Invite **invites, int n);
 	virtual ~InviteHandler();
 
 public slots:
 	void accept();
 	void decline();
+signals:
+	void updateInvites(); 
 };
 
 #endif

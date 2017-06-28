@@ -3,6 +3,7 @@
 
 #include <QString>
 #include "User.hpp"
+#include "DAORegistry.hpp"
 
 class Event{
 	QString name;
@@ -13,6 +14,7 @@ class Event{
 	bool food;
 	bool drink;
 	User *owner;
+	int id;
 	
 public:
 	void setName(QString name){this->name=name;}
@@ -23,6 +25,8 @@ public:
 	void setFood(bool food){this->food=food;}
 	void setDrink(bool drink){this->drink=drink;}
 	void setOwner(User *owner){this->owner=owner;}
+	void setOwner(QString login);
+	void setId(int id){this->id = id;}
 	
 	QString getName(){return this->name;}
 	QString getLocal(){return this->local;}
@@ -32,6 +36,7 @@ public:
 	bool getFood(){return this->food;}
 	bool getDrink(){return this->drink;}
 	User *getOwner(){return this->owner;}
+	int getId(){return this->id;}
 };
 
 #endif

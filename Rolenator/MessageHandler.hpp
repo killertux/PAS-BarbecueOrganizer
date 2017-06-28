@@ -3,9 +3,11 @@
 
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QTimer>
 #include "MessageWindow.hpp"
 #include "MainPageHandler.hpp"
 #include "User.hpp"
+#include "DAORegistry.hpp"
 
 class MessageHandler : public QObject{
 private:
@@ -14,6 +16,7 @@ private:
 	QMainWindow *mother;
 	User *userFrom;
 	User *userTo;
+	QTimer *timer;
 	
 public:
 	MessageHandler(QMainWindow *mother,User *userFrom, User *userTo);
@@ -23,6 +26,7 @@ public slots:
 	void closeWindow();
 	void send();
 	void back();
+	void update();
 };
 
 #endif

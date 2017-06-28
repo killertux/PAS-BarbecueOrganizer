@@ -11,23 +11,13 @@ ViewEventHandler::ViewEventHandler(QMainWindow *mother, Event *event, User *user
 	mother->connect(this->viewEventWindow.actionLog_out,SIGNAL(triggered()),mother,SLOT(goToLogin()));
 	mother->connect(this->viewEventWindow.pushButtonModificar,SIGNAL(clicked()),this,SLOT(goToEdit()));
 	mother->connect(this->viewEventWindow.pushButtonBack,SIGNAL(clicked()),this,SLOT(back()));
-	
-	bool isOwner = true;
-	bool isConfirmed = false;
-	
-	if(!isOwner){
-		this->viewEventWindow.pushButtonModificar->hide();
-	}
-	if(isConfirmed){
-		this->viewEventWindow.pushButtonConfirmar->hide();
-	}
+	mother->connect(this->viewEventWindow.pushButtonConfirmar,SIGNAL(clicked()),this,SLOT(confirmEvent()));
 	
 	this->viewEventWindow.labelNomeEvento->setText(event->getName());
 	this->viewEventWindow.labelDataHora->setText(event->getDate());
 	this->viewEventWindow.labelLocal->setText(event->getLocal());
 	this->viewEventWindow.textBrowserDescricao->setPlainText(event->getDescription());
 	this->viewEventWindow.labelPreco->setText(QString::number(event->getPrice()));
-	std::cout << event->getPrice() << std::endl;
 	if(event->getFood())
 		this->viewEventWindow.checkBoxComidaSim->setCheckState(Qt::Checked);
 	else
@@ -37,9 +27,8 @@ ViewEventHandler::ViewEventHandler(QMainWindow *mother, Event *event, User *user
 	else
 		this->viewEventWindow.checkBoxBebidaNao->setCheckState(Qt::Checked);
 	
-	this->viewEventWindow.listWidgetConfirmadas->addItem("Everton");
-	this->viewEventWindow.listWidgetNaoConfirmadas->addItem("Bruno");
-	this->viewEventWindow.listWidgetNaoConfirmadas->addItem("Tavano");
+	this->processInvited();
+	
 }
 
 ViewEventHandler::~ViewEventHandler(){
@@ -50,6 +39,11 @@ void ViewEventHandler::closeWindow(){
 }
 
 void ViewEventHandler::confirmEvent(){
+	InviteDAO *inviteDAO = DAORegistry::getInviteDAO();
+	Invite *invite = inviteDAO->getInvite(this->user->getLogin(),this->event->getId());
+	invite->setConfirmed(true);
+	inviteDAO->updateInvite(invite);
+	this->processInvited();
 }
 
 void ViewEventHandler::goToEdit(){
@@ -59,6 +53,34 @@ void ViewEventHandler::goToEdit(){
 void ViewEventHandler::back(){
 	MainPageHandler *main = new MainPageHandler(mother,user);
 }
+
+void ViewEventHandler::processInvited(){
+	UserDAO *userDAO = DAORegistry::getUserDAO();
+	InviteDAO *inviteDAO = DAORegistry::getInviteDAO();
+	User **users=NULL;
+	int nUsers;
+	
+	this->viewEventWindow.listWidgetConfirmadas->clear();
+	this->viewEventWindow.listWidgetNaoConfirmadas->clear();
+	
+	nUsers = userDAO->getAllUsersAcceptdInvite(users,this->event->getId());
+	for(int i=0;i<nUsers;i++)
+		this->viewEventWindow.listWidgetNaoConfirmadas->addItem(users[i]->getName());
+	
+	nUsers = userDAO->getAllUsersConfirmedInvite(users,this->event->getId());
+	for(int i=0;i<nUsers;i++)
+		this->viewEventWindow.listWidgetConfirmadas->addItem(users[i]->getName());
+	
+	if(event->getOwner()->getLogin() != user->getLogin()){
+	this->viewEventWindow.pushButtonModificar->hide();
+	if(inviteDAO->getInvite(user->getLogin(),event->getId()) != NULL && inviteDAO->getInvite(user->getLogin(),event->getId())->getConfirmed()){
+		this->viewEventWindow.pushButtonConfirmar->hide();
+		}
+	} else {
+		this->viewEventWindow.pushButtonConfirmar->hide();
+	}
+}
+
 
 
 #include "ViewEventHandler.moc"
