@@ -4,11 +4,18 @@ Rolenator::Rolenator()
 {
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 	this->db = QSqlDatabase::addDatabase("QMYSQL","db");
-	this->db.setHostName("localhost");
+	this->db.setHostName("db4free.net");
+	this->db.setDatabaseName("rolenator");
+	this->db.setPort(3306);
+	this->db.setUserName("killertux");
+	this->db.setPassword("mtfbwy");
+	
+	/*this->db.setHostName("localhost");
 	this->db.setDatabaseName("rolenator");
 	this->db.setPort(3307);
 	this->db.setUserName("root");
-	this->db.setPassword("brs42");
+	this->db.setPassword("brs42");*/
+	
 	if(!this->db.open())
 		std::cout << "Error opening the database connection!\n";
 	this->loginHandler = new LoginHandler(this);
